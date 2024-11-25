@@ -13,6 +13,7 @@ public class VehicleManager {
     private Vehicle[] vehicles;
     private int noVehicles;
     private int vehicleReserved;
+    private int check;
 
 
     VehicleManager() {
