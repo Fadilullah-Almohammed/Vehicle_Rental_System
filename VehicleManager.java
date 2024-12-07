@@ -1,3 +1,29 @@
+/*
+ * 
+ *  Group: 5M07
+ *  Group Section: 7
+ * 
+ *  Students Team:
+ *  - Fadhlallah Almohammed 2230006097"
+    - Abdulrahman Bushihab  2230004493"
+    - Omar Alsubgh          2210002182"
+    - Ali Alhashim          2230004042"
+    - Abdulrahman Alakkas   2230006008"
+ * 
+ * You can login as admin directly for test purposes:
+ *  - email: ali@gmail.com
+ *  - password: Ali11!!1
+ *  - authorization code: authorize12!@
+ * 
+ * You can login as cutomer directly for test purposes:
+ *  - email: moh@gmail.com
+ *  - password: Moham12!@
+ * 
+ */
+
+
+
+
 package Vehicle_Rental_System;
 
 import java.util.ArrayList;
@@ -15,7 +41,6 @@ public class VehicleManager {
     private static final String CURRENCY = "Saudi Riyal";
 
     private static LocalDate dateNow = LocalDate.now();
-    private static ArrayList<Booking> bookings = new ArrayList<Booking>();
     private static Vehicle[] vehicles = new Vehicle[MAX_VEHICLES];
     private static ArrayList<User> users = new ArrayList<User>();
     private static User currentUser;
@@ -34,7 +59,7 @@ public class VehicleManager {
 
         //----------------------------- FOR TEST PURPOSES -----------------------------//
         User admin1 = new Admin();
-        admin1.registerUser("Ali", "Mohammed", "Hasan", "0559645334", "ali@gmail.com", "Ali11!!", "1", 19);
+        admin1.registerUser("Ali", "Mohammed", "Hasan", "0559645334", "ali@gmail.com", "Ali11!!1", "1", 19);
         VehicleManager.users.add(admin1);
 
         User customer1 = new Customer();
@@ -669,7 +694,21 @@ public class VehicleManager {
 
                 case 0:
                     
-                    System.out.print("\n\n BYE BYE --------------------");
+                System.out.print(
+                    "\n\n  ---- THANK YOU FOR USING VEHICLE RENTAL SYSTEM ----" + "\n" +
+                    "\n" +
+                    "   - GROUP: 5M07" + "\n" +
+                    "   - GROUP SECTION: 7" + "\n" +
+                    "   - STUDENTS TEAM:" + "\n\n" +
+                    "       - Fadhlallah Almohammed 2230006097" + "\n" +
+                    "       - Abdulrahman Bushihab  2230004493" + "\n" +
+                    "       - Omar Alsubgh          2210002182" + "\n" +
+                    "       - Ali Alhashim          2230004042" + "\n" +
+                    "       - Abdulrahman Alakkas   2230006008" + "\n" +
+                    "\n" +
+                    "\n" +
+                    "    ---- GOOD BYE ----"
+                );
             }
             
 
@@ -696,7 +735,7 @@ public class VehicleManager {
                     "3 - Update a vehicle" + "\n" +
                     "4 - Remove a vehicle" + "\n" +
                     "5 - View all current bookings" + "\n" +
-                    "6 - Log out" + "\n" +
+                    "0 - Log out" + "\n" +
                     "\n" +
                     "Enter your choice: "
                 );
@@ -717,40 +756,117 @@ public class VehicleManager {
                         break;
 
                     case 2:
-                        System.out.print("\n\n  ---- ADD NEW VEHICLE ----");
+                    System.out.print("\n\n  ---- ADD NEW VEHICLE ----");
 
-                        boolean validType = true;
+                    boolean validType = true;
+                    do {
+                        System.out.print("\n\n - Enter vehicle type (Car, Van, Motorcycle): ");
+                        String type = scanner.nextLine().toLowerCase();
+
+                        if (type.equals("car")) {
+
+                            Car newCar = new Car();
+
+                            // prompt user for new car details and assign them
+                            newCar.requestCarDetails();
+                    
+                            addVehicle(newCar);
+                            break;
+                        } else if (type.equals("van")) {
+                            Van newVan = new Van();
+                            newVan.requestVanDetails();
+                            addVehicle(newVan);
+                            break;
+
+                        } else if (type.equals("motorcycle")) {
+                            MotorCycle newMotorCycle = new MotorCycle();
+                            newMotorCycle.requestMotorCycleDetails();
+                            addVehicle(newMotorCycle);
+                            break;
+                        } else {
+                            System.out.print("\n\n  ! -- Invalid vehicle type. Please try again. -- !");
+                            validType = false;
+                        }
+                    } while (!validType);
+                    break;
+
+                    case 3:
+                        System.out.println("\n\n  ---- UPDATE VEHICLE ----");
+                    
+                        validType = true;
                         do {
                             System.out.print("\n\n - Enter vehicle type (Car, Van, Motorcycle): ");
                             String type = scanner.nextLine().toLowerCase();
-    
+                    
                             if (type.equals("car")) {
-                                
-                                Car newCar = new Car();
-
-                                // prompt user for new car details and assign them
-                                newCar.requestCarDetails();
-                                addVehicle(newCar);
+                                printAvailableCars();
+                                System.out.print("\n\n - Enter the ID of the vehicle you wish to update: ");
+                                String vehicleIdInput = scanner.nextLine();
+                    
+                                Vehicle vehicleToBook = VehicleManager.getVehicleByID(vehicleIdInput);
+                    
+                                if (vehicleToBook != null && vehicleToBook.isAvailable) {  
+                                    Car carToUpdate = (Car) vehicleToBook;
+                                    carToUpdate.requestCarDetails();
+                    
+                                    int index = searchVehicleIndex(vehicleToBook);
+                                    if (index >= 0) {
+                                        VehicleManager.vehicles[index] = carToUpdate;
+                                    }
+                                } else {
+                                    System.out.print("\n\n  ! -- Car is not available or does not exist. -- !");
+                                }
+                    
                                 break;
-                            }
-                            else if (type.equals("van")) {
-
-                            }
-                            else if (type.equals("motorcycle")) {
-
-                            }
-                            else {
+                    
+                            } else if (type.equals("van")) {
+                                printAvailabeVans();
+                                System.out.print("\n\n - Enter the ID of the vehicle you wish to update: ");
+                                String vehicleIdInput = scanner.nextLine();
+                    
+                                Vehicle vehicleToBook = VehicleManager.getVehicleByID(vehicleIdInput);
+                    
+                                if (vehicleToBook != null && vehicleToBook.isAvailable) {  
+                                    Van vanToUpdate = (Van) vehicleToBook;
+                                    vanToUpdate.requestVanDetails();
+                    
+                                    int index = searchVehicleIndex(vehicleToBook);
+                                    if (index >= 0) {
+                                        VehicleManager.vehicles[index] = vanToUpdate;
+                                    }
+                                } else {
+                                    System.out.print("\n\n  ! -- Van is not available or does not exist. -- !");
+                                }
+                    
+                                break;
+                    
+                            } else if (type.equals("motorcycle")) {
+                                printAvailableMotorCycles();
+                                System.out.print("\n\n - Enter the ID of the motorcycle you wish to update: ");
+                                String vehicleIdInput = scanner.nextLine();
+                    
+                                Vehicle vehicleToBook = VehicleManager.getVehicleByID(vehicleIdInput);
+                    
+                                if (vehicleToBook != null && vehicleToBook.isAvailable) {  
+                                    MotorCycle motorcycleToUpdate = (MotorCycle) vehicleToBook;
+                                    motorcycleToUpdate.requestMotorCycleDetails();
+                    
+                                    int index = searchVehicleIndex(vehicleToBook);
+                                    if (index >= 0) {
+                                        VehicleManager.vehicles[index] = motorcycleToUpdate;
+                                    }
+                                } else {
+                                    System.out.print("\n\n  ! -- Motorcycle is not available or does not exist. -- !");
+                                }
+                    
+                                break;
+                    
+                            } else {
                                 System.out.print("\n\n  ! -- Invalid vehicle type. Please try again. -- !");
                                 validType = false;
                             }
                         } while (!validType);
                         break;
-        
-                    case 3:
-                        System.out.println("\n\n  ---- UPDATE VEHICLE ----");
-                        // Provide vehicle update logic
-                        break;
-        
                     case 4:
                         System.out.println("\n\n  ---- REMOVE VEHICLE ----");
                         
@@ -800,7 +916,7 @@ public class VehicleManager {
                         // Show all bookings
                         break;
         
-                    case 6:
+                    case 0:
 
                         System.out.println("\n\n Logging out...");
                         break;
@@ -810,7 +926,7 @@ public class VehicleManager {
                         break;
                 }
         
-            } while (adminChoice != 7);
+            } while (adminChoice != 0);
         }
         
 
@@ -842,6 +958,8 @@ public class VehicleManager {
                     continue;
                 }
         
+                Customer customer = (Customer) VehicleManager.currentUser;
+
                 switch (customerChoice) {
                     case 1:
                         // View available vehicles
@@ -1028,8 +1146,8 @@ public class VehicleManager {
 
                             System.out.print("\n\n  ---- Vehicle Info ----");
                             vehicleToBook.getVehicleInfo();
+                            System.out.print("\n\n -- Booked succesfully --\n\n");
 
-                            System.out.print(VehicleManager.currentUser);
                         }
                         else {
 
@@ -1041,63 +1159,60 @@ public class VehicleManager {
                     }
                     break;
         
-                    case 3:
-                        // System.out.println("\n\n  ---- CANCEL A BOOKING ----");
-        
-                        // // Show the list of customer bookings to cancel
-                        // System.out.println("Fetching your bookings...");
-                        // List<Booking> bookings = VehicleManager.getCustomerBookings((Customer) VehicleManager.currentUser);
-                        // if (bookings.isEmpty()) {
-                        //     System.out.println("No bookings found.");
-                        // } else {
-                        //     // List all bookings with options to cancel
-                        //     for (int i = 0; i < bookings.size(); i++) {
-                        //         System.out.println((i + 1) + ". " + bookings.get(i).toString());
-                        //     }
-                        //     System.out.print("Enter the booking number you want to cancel: ");
-                        //     String cancelChoiceInput = scanner.nextLine();
-                        //     if (cancelChoiceInput.matches("\\d")) {
-                        //         int cancelChoice = Integer.parseInt(cancelChoiceInput);
-                        //         if (cancelChoice > 0 && cancelChoice <= bookings.size()) {
-                        //             Booking bookingToCancel = bookings.get(cancelChoice - 1);
-                        //             if (cancelBooking(bookingToCancel)) {
-                        //                 System.out.println("Booking canceled successfully.");
-                        //             } else {
-                        //                 System.out.println("Failed to cancel the booking. Try again.");
-                        //             }
-                        //         } else {
-                        //             System.out.println("Invalid choice.");
-                        //         }
-                        //     } else {
-                        //         System.out.println("Invalid input.");
-                        //     }
-                        // }
-                        // break;
-        
-                    
-                         case 4: // Display All Bookings
-                    System.out.println("Your Bookings:");
-                    boolean hasBookings = false;
+                    case 3: // Cancel Booking
+                        if (customer.bookings.isEmpty()) {
+                            System.out.println("\n\n  ! -- You have no bookings to cancel -- !");
+                            break;
+                        }
+
+                        System.out.println("\n\n  ---- Your Bookings ----");
+                        for (Booking booking : customer.bookings) {
+                            booking.displayBookingDetails();
+                        }
+
+                        System.out.print("\n\n - Enter the Vehicle ID to cancel your booking:");
+                        String vehicleIdToCancel = scanner.nextLine();
+
+                        boolean bookingFound = false;
+
+                        // Use a standard for loop to safely remove bookings
+                        for (int i = 0; i < customer.bookings.size(); i++) {
+                            Booking booking = customer.bookings.get(i);
+                            if (booking.vehicle.getVehicleID().equals(vehicleIdToCancel)) {
+                                customer.bookings.remove(i); // Remove the booking directly
+                                booking.vehicle.isAvailable = true; // Mark vehicle as available
+                                System.out.println("\n\n  -- Booking successfully canceled --");
+                                bookingFound = true;
+                                break; // Exit loop after successful cancellation
+                            }
+                        }
+
+                        if (!bookingFound) {
+                            System.out.println("\n\n  ! -- No booking found with the specified Vehicle ID -- !");
+                        }
+                        break;
+
+
+                    case 4: // Display All Bookings
                 
-                    // Loop through bookings to display those associated with the current user
-                    for (Booking booking : bookings) {
-                        if (booking.getUser().equals(currentUser)) {
-                            hasBookings = true;
-                            System.out.println("Vehicle ID: " + booking.getVehicle().getId());
-                            System.out.println("Booking Date: " + booking.getBookingDate());
-                            System.out.println("From: " + booking.getFromDate() + " To: " + booking.getToDate());
-                            System.out.println("Rental Period: " + booking.getRentPeriod() + " days");
-                            System.out.println("-----------------------------------");
+                    System.out.println("Your Bookings:");
+
+
+
+                    if (customer.bookings.isEmpty()) {
+                        System.out.print("\n\n  ! -- You don't have any bookings yet -- !");
+                        break;
+                    }
+                    else {
+                        for (Booking booking: customer.bookings) {
+
+                        
+                            booking.displayBookingDetails();
                         }
                     }
-                
-                    if (!hasBookings) {
-                        System.out.println("You have no active bookings.");
-                    }
-                    break;
-                    if (!hasBookings) {
-                        System.out.println("You have no active bookings.");
-                    }
+                    
+
+
                     break;
         
                     case 0:
@@ -1152,6 +1267,18 @@ public class VehicleManager {
             }
         }
     }
+
+public static void deleteBooking(Customer customer, Booking bookingToDelete) {
+
+    if (!customer.bookings.contains(bookingToDelete)) {
+        System.out.println("\n\n  ! -- The booking is not available -- !");
+    } else {
+        customer.bookings.remove(bookingToDelete);
+        System.out.println("\n\n  -- Booking successfully canceled --");
+        bookingToDelete.vehicle.isAvailable = true; // Mark vehicle as available again
+    }
+}
+
 
     public static boolean isAvailable(Vehicle vehicle) {
 
@@ -1561,6 +1688,11 @@ public class VehicleManager {
 
         Vehicle[] availableVehicles = getAvailableVehicles();
 
+        if (availableVehicles == null) {
+            System.out.print("\n\n -- no available vehicles --");
+            return null;
+        }
+
         for (Vehicle vehicle: availableVehicles) {
             
             if (vehicle.getVehicleID() == "") {
@@ -1577,7 +1709,7 @@ public class VehicleManager {
 
     }
 
-    public static boolean bookVehicle(Vehicle vehicle, LocalDate startDate, LocalDate endDate, User currentUser) {
+    public static boolean bookVehicle(Vehicle vehicle, LocalDate startDate, LocalDate endDate, Customer currentUser) {
 
         // Check if vehicle is available
         if (!vehicle.isAvailable) {
@@ -1590,7 +1722,7 @@ public class VehicleManager {
 
         Booking newBooking = new Booking(vehicle, VehicleManager.dateNow, startDate, endDate, vehicle.getPrice(), VehicleManager.CURRENCY, VehicleManager.dateNow);
 
-        bookings.add(newBooking);
+        currentUser.bookings.add(newBooking);
 
         vehicle.isAvailable = false;
     

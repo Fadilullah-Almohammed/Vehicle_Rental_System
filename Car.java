@@ -217,19 +217,7 @@ public class Car extends Vehicle {
             }
         } while (!validAvailability);
 
-        // Display the entered details
-        System.out.println("\n - Car details entered:");
-        System.out.println("    - Make: " + super.make);
-        System.out.println("    - Model: " + super.model);
-        System.out.println("    - Year: " + super.year);
-        System.out.println("    - Color: " + super.color);
-        System.out.println("    - Price: $" + super.price);
-        System.out.println("    - Name: " + super.name);
-        System.out.println("    - Fuel Type: " + super.fuelType);
-        System.out.println("    - Seats: " + super.noSeats);
-        System.out.println("    - Transmission: " + this.transmissionType);
-        System.out.println("    - Insurance: " + (super.hasInsurance ? "Yes" : "No"));
-        System.out.println("    - Available: " + (super.isAvailable ? "Yes" : "No"));
+
 
         System.out.print(
             "\n - Car details entered:" + "\n" +

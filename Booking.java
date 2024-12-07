@@ -2,18 +2,22 @@ package Vehicle_Rental_System;
 
 import java.time.LocalDate;
 
-public class Booking extends Payment {
+public class Booking {
     // Attributes
-    private Vehicle vehicle;
+    public Vehicle vehicle;
     private LocalDate bookingDate;
     private LocalDate fromDate;
     private LocalDate toDate;
     private int rentPeriodDays; 
     public boolean isBookingApproved;
+    public int noBookings;
+    private double totalAmount;
+    private String currency;
 
     // Constructor
     public Booking(Vehicle vehicle, LocalDate bookingDate, LocalDate fromDate, LocalDate toDate, double totalAmount, String currency, LocalDate paymentDate) {
-        super(totalAmount, currency, paymentDate); // Call the Payment constructor
+        this.totalAmount = totalAmount;
+        this.currency = currency;
         this.vehicle = vehicle;
         this.bookingDate = bookingDate;
         this.fromDate = fromDate;
@@ -52,6 +56,21 @@ public class Booking extends Payment {
         return rentPeriodDays;
     }
 
+    public void setTotalAmount(double amount) {
+        this.totalAmount = amount;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
     // Business Logic
     public void createBooking(Vehicle vehicle, LocalDate bookingDate, LocalDate fromDate, LocalDate toDate) {
         this.vehicle = vehicle;
@@ -81,5 +100,15 @@ public class Booking extends Payment {
             // Manually calculate the rent period in days by subtracting dates
             rentPeriodDays = (int) (toDate.toEpochDay() - fromDate.toEpochDay());
         }
+    }
+
+    public void displayBookingDetails() {
+        System.out.print("\n\nVehicle ID: " + vehicle.getVehicleID());
+        System.out.println("Vehicle: " + vehicle.name);
+        System.out.println("Booking Date: " + bookingDate);
+        System.out.println("From: " + fromDate);
+        System.out.println(" To: " + toDate);
+        System.out.println("Total Amount: " + getTotalAmount() + " " + getCurrency());
+        System.out.println("\n"); 
     }
 }
